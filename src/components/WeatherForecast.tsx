@@ -1,9 +1,9 @@
+import { useState } from "react";
+import SearchModal from "./SearchModal";
 import locationIcon from "../assets/location.svg";
 import sunnyIcon from "../assets/sunny.svg";
 import cloudyIcon from "../assets/cloudy.svg";
 import rainyIcon from "../assets/rainy.svg";
-import { useState } from "react";
-import SearchModal from "./SearchModal";
 
 function WeatherForecast() {
 	const [isOpen, setIsOpen] = useState(false);
