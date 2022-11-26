@@ -1,12 +1,20 @@
-import type { GeocodingApiResponseItem, LatLng } from "./types";
+import type {
+	CurrentWeatherDataResponse,
+	GeocodingApiResponseItem,
+} from "./types";
+
+const DEFAULT_LAT = 40.7128;
+const DEFAULT_LON = -74.006;
 
 const apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 const baseUrl = "https://api.openweathermap.org";
 
-async function getLatLngForLocation(
-	location: string
-): Promise<LatLng[] | undefined> {
-	const parsedQuery = location.replace(/\s/g, "").split(",");
+export async function getGeocodeInfo(
+	query: string
+): Promise<GeocodingApiResponseItem[] | undefined> {
+	if (query.length === 0) return;
+
+	const parsedQuery = query.replace(/\s/g, "").split(",");
 	const url = `${baseUrl}/geo/1.0/direct?q=${parsedQuery.join(
 		","
 	)}&appid=${apiKey}&limit=5`;
@@ -22,33 +30,33 @@ async function getLatLngForLocation(
 		const data = (await res.json()) as GeocodingApiResponseItem[];
 
 		return data.map((item) => ({
-			lat: item.lat,
-			lng: item.lon,
+			...item,
+			state: item?.state ?? "",
 		}));
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function getCurrentWeather(query: string) {
-	const latLng = await getLatLngForLocation(query);
-	console.log(latLng);
-	return latLng;
-	// const url = `${baseUrl}/data/2.5/weather?q=${parsedQuery.join(
-	// 	","
-	// )}&appid=${apiKey}&units=metric`;
-	// console.log(url);
-	// try {
-	// 	const res = await fetch(url);
+export async function getCurrentWeather(
+	location: GeocodingApiResponseItem | null
+): Promise<CurrentWeatherDataResponse | undefined> {
+	const { lat, lon } = location ?? { lat: DEFAULT_LAT, lon: DEFAULT_LON };
+	const url = `${baseUrl}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-	// 	if (!res.ok)
-	// 		throw new Error(
-	// 			`Could not get current weather. ${res.status} : ${res.statusText}`
-	// 		);
+	try {
+		const res = await fetch(url);
 
-	// 	const data = await res.json();
-	// 	return data;
-	// } catch (error) {
-	// 	console.error(error);
-	// }
+		if (!res.ok)
+			throw new Error(
+				`Could not get current weather. ${res.status} : ${res.statusText}`
+			);
+
+		const data = await res.json();
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
 }
+
+export async function getForecast(location: GeocodingApiResponseItem) {}

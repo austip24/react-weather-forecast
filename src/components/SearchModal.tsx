@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Transition, Dialog } from "@headlessui/react";
 import Search from "./Search";
+import { useWeather } from "./providers/WeatherProvider";
 
 interface ModalProps {
 	isOpen: boolean;
@@ -9,9 +10,14 @@ interface ModalProps {
 }
 
 function SearchModal({ isOpen, onClose, children }: ModalProps) {
-	const handleOnSearchChange = async (searchData: string) => {
-		console.log(searchData);
-	};
+	const { currentLocation, fetchCurrentWeatherData } = useWeather();
+
+	useEffect(() => {
+		if (currentLocation) {
+			onClose();
+			fetchCurrentWeatherData();
+		}
+	}, [currentLocation]);
 
 	return (
 		<>
@@ -41,18 +47,17 @@ function SearchModal({ isOpen, onClose, children }: ModalProps) {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden bg-[#343D4B] border border-white/50 p-6 text-left align-middle shadow-xl transition-all rounded-[10px]">
-									<Dialog.Title
-										as="h3"
-										className="text-lg font-medium leading-6 text-white"
-									>
-										Change Location
-									</Dialog.Title>
-									<Search
-										onSearchChange={handleOnSearchChange}
-										debounceTimeout={600}
-									/>
-								</Dialog.Panel>
+								<div className="w-full max-w-md rounded-[10px] bg-gradient-to-r from-[#88EBEFE5] to-[#535BE6E5] p-[2px]">
+									<Dialog.Panel className="w-full transform bg-[#343D4B] p-6 text-left align-middle shadow-xl transition-all rounded-[10px]">
+										<Dialog.Title
+											as="h3"
+											className="text-lg font-medium leading-6 text-white"
+										>
+											Change Location
+										</Dialog.Title>
+										<Search />
+									</Dialog.Panel>
+								</div>
 							</Transition.Child>
 						</div>
 					</div>
