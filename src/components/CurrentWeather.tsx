@@ -5,10 +5,6 @@ import rainyIcon from "../assets/rainy.svg";
 import { useWeather } from "./providers/WeatherProvider";
 import { MONTHS, WEEK_DAYS } from "../utils/constants";
 
-const dateOptions = {
-	weekday: "",
-};
-
 function CurrentWeather() {
 	const { currentWeatherData } = useWeather();
 	const date = new Date();
@@ -27,7 +23,8 @@ function CurrentWeather() {
 						alt="Location Icon"
 						className="w-[27px] aspect-square"
 					/>
-					{currentWeatherData?.name}, {currentWeatherData?.sys.country}
+					{JSON.stringify(currentWeatherData)}
+					{/* {currentWeatherData?.name}, {currentWeatherData?.sys.country} */}
 				</div>
 			</section>
 			<section className="flex flex-col items-center lg:items-start gap-4">

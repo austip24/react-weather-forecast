@@ -17,7 +17,7 @@ export const useWeather = () => useContext(WeatherContext);
 export default function WeatherProvider({ children }: WeatherProviderProps) {
 	const { data: currentWeatherData } = useQuery({
 		queryKey: ["currentWeather", "Tucson"],
-		queryFn: () => getCurrentWeather("London, UK"),
+		queryFn: () => getCurrentWeather("Tucson"),
 	});
 
 	return (
