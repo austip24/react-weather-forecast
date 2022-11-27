@@ -4,24 +4,26 @@ import locationIcon from "../assets/location.svg";
 import sunnyIcon from "../assets/sunny.svg";
 import cloudyIcon from "../assets/cloudy.svg";
 import rainyIcon from "../assets/rainy.svg";
+import { useWeather } from "./providers/WeatherProvider";
 
 function WeatherForecast() {
+	const { currentWeatherData } = useWeather();
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
 		<div className="flex flex-col justify-around lg:w-[520px] lg:h-[623px] p-[50px] text-white bg-[#222831] rounded-r-[25px]">
 			<section className="flex flex-col ml-[5px] mt-[5px] gap-4">
 				<div className="flex justify-between text-[28px]">
-					<span className="capitalize font-bold">Precipitation</span>
-					<span className="">0%</span>
+					<span className="capitalize font-bold">Pressure</span>
+					<span className="">{currentWeatherData?.main.pressure} hPa</span>
 				</div>
 				<div className="flex justify-between text-[28px]">
 					<span className="capitalize font-bold">Humidity</span>
-					<span>42%</span>
+					<span>{currentWeatherData?.main.humidity}%</span>
 				</div>
 				<div className="flex justify-between text-[28px]">
 					<span className="capitalize font-bold">Wind</span>
-					<span>3 km/h</span>
+					<span>{(currentWeatherData?.wind.speed * 3600) / 1000} km/h</span>
 				</div>
 			</section>
 

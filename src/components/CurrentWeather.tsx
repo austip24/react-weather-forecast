@@ -14,10 +14,6 @@ function CurrentWeather() {
 		return type === "Drizzle" || type === "Thunderstorm" || type === "Rain";
 	};
 
-	const isSunny = (type: string): boolean => {
-		return type === "Clear" || type === "Atmosphere";
-	};
-
 	const isSnowy = (type: string): boolean => {
 		return type === "Snow";
 	};
@@ -26,6 +22,11 @@ function CurrentWeather() {
 		return type === "Clouds";
 	};
 
+	const isSunny = (type: string): boolean => {
+		return !isRainy(type) && !isSnowy(type) && !isCloudy(type);
+	};
+
+	console.log(currentWeatherData);
 	return (
 		<div className="flex justify-between items-center w-full lg:items-start gap-24 lg:gap-0 lg:flex-col max-w-[493px] max-h-[666px] lg:h-[666px] text-white px-8 py-12 rounded-[30px] bg-gradient-to-br from-[#88EBEFE5] to-[#535BE6E5]">
 			<section className="flex flex-col gap-4">
