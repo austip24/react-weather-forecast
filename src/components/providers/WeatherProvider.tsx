@@ -5,23 +5,21 @@ import {
 	RefetchQueryFilters,
 	useQuery,
 } from "@tanstack/react-query";
-import { getCurrentWeather } from "../../actions/weather";
-import {
-	CurrentWeatherDataResponse,
+import { getCurrentWeather, getForecast } from "../../actions/weather";
+import type {
 	GeocodingApiResponseItem,
+	ForecastDataResponse,
 } from "../../actions/types";
 
 interface IWeatherContext {
-	currentWeatherData: any;
+	forecast: ForecastDataResponse | undefined;
 	currentLocation: GeocodingApiResponseItem | null;
 	setCurrentLocation: React.Dispatch<
 		React.SetStateAction<GeocodingApiResponseItem | null>
 	>;
-	fetchCurrentWeatherData: <TPageData>(
+	fetchForecast: <TPageData>(
 		options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-	) => Promise<
-		QueryObserverResult<CurrentWeatherDataResponse | undefined, unknown>
-	>;
+	) => Promise<QueryObserverResult<any, unknown>>;
 }
 
 const WeatherContext = createContext<IWeatherContext>({} as IWeatherContext);
@@ -36,19 +34,16 @@ export default function WeatherProvider({ children }: WeatherProviderProps) {
 	const [currentLocation, setCurrentLocation] =
 		useState<GeocodingApiResponseItem | null>(null);
 
-	const { data: currentWeatherData, refetch: fetchCurrentWeatherData } =
-		useQuery({
-			queryKey: ["currentWeather", currentLocation],
-			queryFn: () => {
-				return getCurrentWeather(currentLocation);
-			},
-		});
+	const { data: forecast, refetch: fetchForecast } = useQuery({
+		queryKey: ["dailyForecast", currentLocation],
+		queryFn: () => getForecast(currentLocation),
+	});
 
 	return (
 		<WeatherContext.Provider
 			value={{
-				currentWeatherData,
-				fetchCurrentWeatherData,
+				forecast,
+				fetchForecast,
 				currentLocation,
 				setCurrentLocation,
 			}}

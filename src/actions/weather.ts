@@ -1,3 +1,4 @@
+import { ForecastDataResponse } from "./types";
 import type {
 	CurrentWeatherDataResponse,
 	GeocodingApiResponseItem,
@@ -52,11 +53,31 @@ export async function getCurrentWeather(
 				`Could not get current weather. ${res.status} : ${res.statusText}`
 			);
 
-		const data = await res.json();
+		const data = (await res.json()) as CurrentWeatherDataResponse;
 		return data;
 	} catch (error) {
 		console.error(error);
 	}
 }
 
-export async function getForecast(location: GeocodingApiResponseItem) {}
+export async function getForecast(
+	location: GeocodingApiResponseItem | null
+): Promise<ForecastDataResponse | undefined> {
+	const { lat, lon } = location ?? { lat: DEFAULT_LAT, lon: DEFAULT_LON };
+	const url = `${baseUrl}/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric`;
+
+	try {
+		const res = await fetch(url);
+
+		if (!res.ok) {
+			throw new Error(
+				`Could not get daily forecast. ${res.status} : ${res.statusText}`
+			);
+		}
+
+		const data = (await res.json()) as ForecastDataResponse;
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+}

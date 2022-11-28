@@ -10,12 +10,12 @@ interface ModalProps {
 }
 
 function SearchModal({ isOpen, onClose, children }: ModalProps) {
-	const { currentLocation, fetchCurrentWeatherData } = useWeather();
+	const { currentLocation, fetchForecast } = useWeather();
 
 	useEffect(() => {
 		if (currentLocation) {
 			onClose();
-			fetchCurrentWeatherData();
+			fetchForecast();
 		}
 	}, [currentLocation]);
 

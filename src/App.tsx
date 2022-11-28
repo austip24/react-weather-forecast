@@ -1,13 +1,6 @@
 import CurrentWeather from "./components/CurrentWeather";
-import WeatherProvider, {
-	useWeather,
-} from "./components/providers/WeatherProvider";
+import WeatherProvider from "./components/providers/WeatherProvider";
 import WeatherForecast from "./components/WeatherForecast";
-
-const cityCoords = {
-	lat: 32.254,
-	lng: -110.9742,
-};
 
 function App() {
 	return (
