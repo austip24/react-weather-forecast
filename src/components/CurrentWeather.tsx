@@ -10,9 +10,7 @@ import { isCloudy, isRainy, isSnowy, isSunny } from "../utils/weather";
 function CurrentWeather() {
 	const { forecast, currentLocation } = useWeather();
 	const date = new Date();
-
-	console.log(currentLocation);
-	console.log(forecast);
+	
 	return (
 		<div className="flex justify-between items-center w-full lg:items-start gap-24 lg:gap-0 lg:flex-col max-w-[493px] max-h-[666px] lg:h-[666px] text-white px-8 py-12 rounded-[30px] bg-gradient-to-br from-[#88EBEFE5] to-[#535BE6E5]">
 			<section className="flex flex-col gap-4">

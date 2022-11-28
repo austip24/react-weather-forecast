@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import {
 	QueryObserverResult,
 	RefetchOptions,
 	RefetchQueryFilters,
 	useQuery,
 } from "@tanstack/react-query";
-import { getCurrentWeather, getForecast } from "../../actions/weather";
+import { getForecast } from "../../actions/weather";
 import type {
 	GeocodingApiResponseItem,
 	ForecastDataResponse,

@@ -1,8 +1,4 @@
-import { ForecastDataResponse } from "./types";
-import type {
-	CurrentWeatherDataResponse,
-	GeocodingApiResponseItem,
-} from "./types";
+import type { ForecastDataResponse, GeocodingApiResponseItem } from "./types";
 
 const DEFAULT_LAT = 40.7128;
 const DEFAULT_LON = -74.006;
@@ -34,27 +30,6 @@ export async function getGeocodeInfo(
 			...item,
 			state: item?.state ?? "",
 		}));
-	} catch (error) {
-		console.error(error);
-	}
-}
-
-export async function getCurrentWeather(
-	location: GeocodingApiResponseItem | null
-): Promise<CurrentWeatherDataResponse | undefined> {
-	const { lat, lon } = location ?? { lat: DEFAULT_LAT, lon: DEFAULT_LON };
-	const url = `${baseUrl}/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
-	try {
-		const res = await fetch(url);
-
-		if (!res.ok)
-			throw new Error(
-				`Could not get current weather. ${res.status} : ${res.statusText}`
-			);
-
-		const data = (await res.json()) as CurrentWeatherDataResponse;
-		return data;
 	} catch (error) {
 		console.error(error);
 	}

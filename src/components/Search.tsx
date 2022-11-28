@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { getGeocodeInfo } from "../actions/weather";
 import useDebounce from "../hooks/useDebounce";
